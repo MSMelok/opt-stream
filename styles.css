@@ -157,6 +157,7 @@ body {
 .recent-channels, .favorite-apps {
   width: 96%;
   margin: 0 auto; /* Centers the div */
+  padding: 35px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -174,7 +175,7 @@ body {
 }
 
 .channel-list img, .app-list img {
-  width: 300px;
+  width: 400px;
   border-radius: 8px;
   cursor: pointer;
   overflow: inherit;
