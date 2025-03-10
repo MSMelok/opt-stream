@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Optimum Stream - Settings Guide</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -46,7 +46,7 @@
               <span>Optimum TV</span>
             </div>
             <div class="app-item">
-              <img src="./assets/netflexAppSmall.png" alt="Netflix">
+              <img src="./assets/netflexApp.png" alt="Netflix">
               <span>Netflix</span>
             </div>
             <!-- Add more apps -->
@@ -199,95 +199,45 @@
   </template>
 
   <template id="wifi-panel-template">
-    <div class="right-panel">
-      <div class="right-panel-header">
-        <button class="back-button">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <h2>Network & Internet</h2>
+    <div class="wifi-status">
+      <div class="wifi-toggle">
+        <span>Wi-Fi</span>
+        <label class="switch">
+          <input type="checkbox" id="wifi-toggle" checked>
+          <span class="slider round"></span>
+        </label>
       </div>
-      <div class="right-panel-content">
-        <div class="wifi-status">
-          <div class="wifi-toggle">
-            <span>Wi-Fi</span>
-            <label class="switch">
-              <input type="checkbox" id="wifi-toggle" checked>
-              <span class="slider round"></span>
-            </label>
-          </div>
-          <p class="wifi-name">Connected to: <span id="current-network">Not connected</span></p>
-        </div>
-        <div class="wifi-list">
-          <h3>Available Networks</h3>
-          <div class="network-list" id="network-list">
-            <!-- Networks will be added dynamically -->
-          </div>
-        </div>
+      <p class="wifi-name">Connected to: <span id="current-network">Not connected</span></p>
+    </div>
+    <div class="wifi-list">
+      <h3>Available Networks</h3>
+      <div class="network-list" id="network-list">
+        <!-- Networks will be added dynamically -->
       </div>
     </div>
   </template>
 
   <template id="display-panel-template">
-    <div class="right-panel">
-      <div class="right-panel-header">
-        <button class="back-button">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <h2>Display & Sound</h2>
-      </div>
-      <div class="right-panel-content">
-        <div class="panel-content">
-          <!-- Content will be added dynamically -->
-        </div>
-      </div>
+    <div class="panel-content">
+      <!-- Content will be added dynamically -->
     </div>
   </template>
 
   <template id="remote-panel-template">
-    <div class="right-panel">
-      <div class="right-panel-header">
-        <button class="back-button">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <h2>Remote & Accessories</h2>
-      </div>
-      <div class="right-panel-content">
-        <div class="panel-content">
-          <!-- Content will be added dynamically -->
-        </div>
-      </div>
+    <div class="panel-content">
+      <!-- Content will be added dynamically -->
     </div>
   </template>
 
   <template id="storage-panel-template">
-    <div class="right-panel">
-      <div class="right-panel-header">
-        <button class="back-button">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <h2>Storage</h2>
-      </div>
-      <div class="right-panel-content">
-        <div class="panel-content">
-          <!-- Content will be added dynamically -->
-        </div>
-      </div>
+    <div class="panel-content">
+      <!-- Content will be added dynamically -->
     </div>
   </template>
 
   <template id="about-panel-template">
-    <div class="right-panel">
-      <div class="right-panel-header">
-        <button class="back-button">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <h2>About</h2>
-      </div>
-      <div class="right-panel-content">
-        <div class="panel-content">
-          <!-- Content will be added dynamically -->
-        </div>
-      </div>
+    <div class="panel-content">
+      <!-- Content will be added dynamically -->
     </div>
   </template>
 
@@ -302,7 +252,7 @@
       <div class="right-panel-content">
         <div class="app-info">
           <div class="app-header">
-            <img src="" alt="" class="app-icon">
+            <img src="./assets/settingsApp.png" alt="" class="app-icon">
             <div class="app-details">
               <h3 class="app-name"></h3>
               <p class="app-version">Version 1.0.0</p>

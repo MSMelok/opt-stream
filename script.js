@@ -15,12 +15,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Welcome Overlay
   const overlay = document.getElementById('overlay');
-  setTimeout(() => {
-  overlay.style.opacity = '0';
-  setTimeout(() => {
-    overlay.style.display = 'none';
-  }, 500);
-}, 4000);
+  if (overlay) {
+    setTimeout(() => {
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 500);
+    }, 4000);
+  }
 
   // Tab Navigation
   const tabButtons = document.querySelectorAll('.tab-button');
@@ -35,7 +37,10 @@ document.addEventListener('DOMContentLoaded', function() {
       // Add active class to clicked button and corresponding content
       button.classList.add('active');
       const targetId = button.getAttribute('data-target');
-      document.getElementById(targetId).classList.add('active');
+      const targetContent = document.getElementById(targetId);
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
     });
   });
 
@@ -43,38 +48,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const menuButtons = document.querySelectorAll('.menu-button');
   const descriptionText = document.getElementById('description-text');
 
-  menuButtons.forEach(button => {
-    button.addEventListener('mouseenter', () => {
-      const description = button.getAttribute('data-text');
-      if (description) {
-        descriptionText.textContent = description;
-      }
+  if (menuButtons.length > 0 && descriptionText) {
+    menuButtons.forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        const description = button.getAttribute('data-text');
+        if (description) {
+          descriptionText.textContent = description;
+        }
+      });
+
+      button.addEventListener('mouseleave', () => {
+        descriptionText.textContent = '';
+      });
     });
+  }
 
-    button.addEventListener('mouseleave', () => {
-      descriptionText.textContent = '';
-    });
-  });
-
-  // Right Panel
-  const deviceSettingsBtn = document.getElementById('deviceSettingsBtn');
-  const rightPanel = document.getElementById('rightPanel');
-  const backButton = document.querySelector('.back-button');
-
-  deviceSettingsBtn.addEventListener('click', () => {
-    rightPanel.classList.add('active');
-  });
-
-  backButton.addEventListener('click', () => {
-    rightPanel.classList.remove('active');
-  });
-
-  // Settings Options Navigation
-  const settingOptions = document.querySelectorAll('.setting-option');
-  settingOptions.forEach(option => {
-    option.addEventListener('click', () => {
-      // Here you can add specific behavior for each setting option
-      console.log(`Selected setting: ${option.textContent}`);
-    });
-  });
+  // Initialize Settings Manager
+  if (typeof SettingsManager === 'function') {
+    window.settingsManager = new SettingsManager();
+  }
 });
