@@ -73,7 +73,7 @@ systemApps.push({
   name: 'Optimum TV',
   publisher: 'Optimum',
   version: '2.1.0',
-  icon: './assets/opt-tv-logo.png',
+  icon: './assets/optTvApp.png',
   isSystem: true,
   storage: {
     total: '1.5 GB',
