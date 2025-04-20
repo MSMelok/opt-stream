@@ -6,7 +6,7 @@ import { settingsItems, generalSettingsItems, SettingItem } from "@/data/mockDat
 
 const Settings = () => {
   const [, navigate] = useLocation();
-  const [selectedSetting, setSelectedSetting] = useState<SettingItem>(settingsItems[0]);
+  const [selectedSetting, setSelectedSetting] = useState<SettingItem | null>(null);
   const [deviceSettingsOpen, setDeviceSettingsOpen] = useState(false);
 
   const handleSelectSetting = (setting: SettingItem) => {
@@ -22,52 +22,71 @@ const Settings = () => {
     }
   };
 
-  // Function to handle button style, the Device & Remote Settings button should be highlighted when selected
-  const getButtonClass = (buttonName: string) => {
-    const baseClass = "flex items-center justify-between w-full p-4 rounded-full text-left";
+  // Function to handle button style for settings items
+  const getButtonClass = (title: string) => {
+    const baseClass = "group flex items-center justify-between w-full p-4 rounded-full text-left transition";
     
-    if (buttonName === "Device & Remote Settings" || 
-        (selectedSetting.title === "Device & Remote Settings" && deviceSettingsOpen)) {
+    if (selectedSetting?.title === title && title === "Device & Remote Settings" && deviceSettingsOpen) {
       return `${baseClass} bg-white text-[#001133]`;
+    } else if (title === "Default Channel") {
+      // Special case for Default Channel with a value
+      return `${baseClass} bg-[#0a1e42] text-white hover:bg-opacity-80`;
     }
     
-    return `${baseClass} bg-[#0a1e42] hover:bg-opacity-90 text-white`;
+    return `${baseClass} bg-[#0a1e42] text-white hover:bg-opacity-80`;
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">      
-      <div className="py-6">
-        <h1 className="text-2xl font-semibold mb-8">General</h1>
+    <main className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 pb-8 bg-[#001133]">
+      <div className="py-5">
+        <h1 className="text-3xl font-semibold mb-4">Settings</h1>
+        <h2 className="text-xl text-gray-400 mb-6">Optimum TV</h2>
         
-        {/* General settings with updated design - more circular buttons styled like the screenshot */}
-        <div className="space-y-4 mb-8 max-w-3xl">
-          <button 
-            className={getButtonClass("Accessibility")}
-            onClick={() => handleSelectSetting(generalSettingsItems.find(item => item.title === "Accessibility")!)}
-          >
-            <span>Accessibility</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
-          
-          <button 
-            className={getButtonClass("Device & Remote Settings")}
-            onClick={() => handleSelectSetting(generalSettingsItems.find(item => item.title === "Device & Remote Settings")!)}
-          >
-            <span>Device & Remote Settings</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
-          
-          <button 
-            className={getButtonClass("Help")}
-            onClick={() => handleSelectSetting(generalSettingsItems.find(item => item.title === "Help & Support")!)}
-          >
-            <span>Help</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
+        {/* Optimum TV settings */}
+        <div className="space-y-3 mb-10 max-w-2xl">
+          {settingsItems.map((item) => (
+            <button 
+              key={item.id}
+              className={getButtonClass(item.title)}
+              onClick={() => handleSelectSetting(item)}
+            >
+              <span className="font-medium">{item.title}</span>
+              <div className="flex items-center">
+                {item.type === "value" && (
+                  <span className="text-gray-400 mr-3">{item.value}</span>
+                )}
+                {item.type === "toggle" && (
+                  <span className="text-gray-400 mr-3">{item.value}</span>
+                )}
+                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center group-hover:bg-gray-600">
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* General section */}
+        <h2 className="text-xl text-gray-400 mb-4">General</h2>
+        
+        {/* General settings with circular buttons styled like the screenshot */}
+        <div className="space-y-3 mb-8 max-w-2xl">
+          {generalSettingsItems.map((item) => (
+            <button 
+              key={item.id}
+              className={getButtonClass(item.title)}
+              onClick={() => handleSelectSetting(item)}
+            >
+              <span className="font-medium">{item.title}</span>
+              <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center group-hover:bg-gray-600">
+                <ChevronRight className="w-4 h-4 text-gray-400" />
+              </div>
+            </button>
+          ))}
         </div>
       </div>
       
-      {/* Device Settings Overlay - This now appears as a panel on the right */}
+      {/* Device Settings Overlay - This appears as a panel on the right */}
       <DeviceSettingsOverlay 
         isOpen={deviceSettingsOpen} 
         onClose={() => setDeviceSettingsOpen(false)} 
