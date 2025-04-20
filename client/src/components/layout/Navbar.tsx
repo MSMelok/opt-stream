@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useTime } from "@/hooks/useTime";
-import { 
-  Search, Settings, Bell, Home, Tv, Film, HardDrive, 
-  Trophy, Grid, User
-} from "lucide-react";
+import { Search, Settings } from "lucide-react";
 
 const Navbar = () => {
   const [location, navigate] = useLocation();
   const formattedTime = useTime();
+
+  // Ensure Home page is active when the site initially loads
+  useEffect(() => {
+    if (location === "") {
+      navigate("/", { replace: true });
+    }
+  }, [location, navigate]);
 
   const isActive = (path: string): boolean => {
     return location === path;
@@ -28,11 +32,11 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-[#001133] border-b border-blue-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-12">
-          {/* Main Navigation */}
-          <nav className="flex space-x-6 items-center">
+    <header className="sticky top-0 z-50 bg-[#001133]">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex justify-between items-center h-14">
+          {/* Left Navigation */}
+          <nav className="flex space-x-8 items-center">
             {navigationLinks.map((link) => (
               <button
                 key={link.path}
@@ -47,29 +51,31 @@ const Navbar = () => {
                 {link.name}
               </button>
             ))}
-
+            
+            {/* Search icon */}
             <button 
               className="text-gray-400 hover:text-white"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
             </button>
-          </nav>
-          
-          {/* Right side items */}
-          <div className="flex items-center space-x-3">
-            <button
+            
+            {/* Settings icon */}
+            <button 
               onClick={handleSettingsClick}
-              className="p-1 rounded-full bg-white bg-opacity-10"
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-white"
               aria-label="Settings"
             >
-              <Settings className="w-5 h-5 text-white" />
+              <Settings className="w-4 h-4 text-[#001133]" />
             </button>
-            
-            <div className="flex items-center">
-              <span className="text-sm font-medium text-white mr-1">optimum.tv</span>
-              <span className="text-sm font-medium text-white">{formattedTime}</span>
-            </div>
+          </nav>
+          
+          {/* Right side - Time & Brand */}
+          <div className="flex items-center">
+            <span className="text-sm font-medium text-white flex items-center">
+              <span className="mr-1">Optimum.tv</span>
+              <span className="ml-1">{formattedTime}</span>
+            </span>
           </div>
         </div>
       </div>

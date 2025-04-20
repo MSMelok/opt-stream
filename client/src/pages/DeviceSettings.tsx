@@ -51,8 +51,8 @@ const DeviceSettings = () => {
               <div className="flex items-center space-x-3 mb-2">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">O</div>
                 <div>
-                  <p className="font-medium">Optimum ID</p>
-                  <p className="text-sm text-gray-400">family_member</p>
+                  <p className="font-medium">family_member</p>
+                  <p className="text-sm text-gray-400">Optimum ID</p>
                 </div>
               </div>
               <div className="mt-3 p-2 bg-gray-700 rounded text-center text-sm hover:bg-gray-600 cursor-pointer">
@@ -107,20 +107,7 @@ const DeviceSettings = () => {
                   </label>
                 </div>
                 
-                {/* List of apps */}
-                <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center mr-3">
-                      <span className="text-white font-bold">TV</span>
-                    </div>
-                    <div>
-                      <p className="font-medium">Optimum TV App</p>
-                      <p className="text-xs text-gray-400">v3.2.1 • 245 MB</p>
-                    </div>
-                  </div>
-                  <span className="text-sm text-gray-400">Open</span>
-                </div>
-                
+                {/* List of apps */}             
                 <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
                   <div className="flex items-center">
                     <div className="w-10 h-10 bg-red-600 rounded flex items-center justify-center mr-3">
@@ -174,6 +161,97 @@ const DeviceSettings = () => {
                       </div>
                       <span className="text-sm text-gray-400">System</span>
                     </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-700 rounded flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">UI</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">System UI</p>
+                          <p className="text-xs text-gray-400">v12.0 • 325 MB</p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-400">System</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-700 rounded flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">UI</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">System UI</p>
+                          <p className="text-xs text-gray-400">v12.0 • 325 MB</p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-400">System</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-700 rounded flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">UI</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">System UI</p>
+                          <p className="text-xs text-gray-400">v12.0 • 325 MB</p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-400">System</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-700 rounded flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">UI</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">System UI</p>
+                          <p className="text-xs text-gray-400">v12.0 • 325 MB</p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-400">System</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-700 rounded flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">UI</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">System UI</p>
+                          <p className="text-xs text-gray-400">v12.0 • 325 MB</p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-400">System</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 bg-gray-700 rounded flex items-center justify-center mr-3">
+                          <span className="text-white font-bold">UI</span>
+                        </div>
+                        <div>
+                          <p className="font-medium">System UI</p>
+                          <p className="text-xs text-gray-400">v12.0 • 325 MB</p>
+                        </div>
+                      </div>
+                      <span className="text-sm text-gray-400">System</span>
+                    </div>
+
+                    <div className="p-3 bg-gray-800 hover:bg-gray-700 rounded-md flex items-center justify-between cursor-pointer">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-blue-600 rounded flex items-center justify-center mr-3">
+                      <span className="text-white font-bold">TV</span>
+                    </div>
+                    <div>
+                      <p className="font-medium">Optimum TV App</p>
+                      <p className="text-xs text-gray-400">v3.2.1 • 245 MB</p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-gray-400">Open</span>
+                </div>
                   </>
                 )}
               </div>

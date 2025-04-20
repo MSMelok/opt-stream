@@ -26,7 +26,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/settings" component={Settings} />
         <Route path="/device-settings" component={DeviceSettings} />
-        <Route path="/accessibility" component={AccessibilitySettings} />
+        <Route path="/accessibility-settings" component={AccessibilitySettings} />
         <Route path="/account" component={Account} />
         <Route path="/guide" component={Guide} />
         <Route path="/guide-options" component={GuideOptions} />
