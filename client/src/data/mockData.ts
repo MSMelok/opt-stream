@@ -581,6 +581,22 @@ export interface DeviceSetting {
   title: string;
   icon: string;
   subtitle?: string;
+  path?: string;
+  hasToggle?: boolean;
+  toggleValue?: boolean;
+  hasChevron?: boolean;
+  subSettings?: DeviceSubSetting[];
+}
+
+export interface DeviceSubSetting {
+  id: number;
+  title: string;
+  type: 'toggle' | 'select' | 'input' | 'button' | 'info';
+  value?: string | boolean;
+  options?: string[];
+  description?: string;
+  status?: string;
+  icon?: string;
 }
 
 export const deviceSettings: DeviceSetting[] = [
@@ -589,32 +605,292 @@ export const deviceSettings: DeviceSetting[] = [
     title: "Network & Internet",
     icon: "wifi",
     subtitle: "Ethernet connected",
+    path: "network",
+    hasChevron: true,
+    subSettings: [
+      {
+        id: 101,
+        title: "Wi-Fi",
+        type: "toggle",
+        value: false,
+        description: "Connect to wireless networks",
+        status: "Off"
+      },
+      {
+        id: 102,
+        title: "Ethernet",
+        type: "info",
+        value: true,
+        status: "Connected",
+        description: "Optimum-5G network"
+      },
+      {
+        id: 103,
+        title: "Proxy settings",
+        type: "select",
+        value: "None",
+        options: ["None", "Manual", "Auto-Config"],
+        description: "Configure HTTP proxy for network"
+      },
+      {
+        id: 104,
+        title: "IP settings",
+        type: "select",
+        value: "DHCP",
+        options: ["DHCP", "Static"],
+        description: "Configure IP address allocation"
+      },
+    ]
   },
   {
     id: 2,
     title: "Accounts & sign-in",
     icon: "user",
+    path: "accounts",
+    hasChevron: true,
+    subSettings: [
+      {
+        id: 201,
+        title: "Optimum.tv",
+        type: "info",
+        value: "family_member",
+        description: "Currently signed in"
+      },
+      {
+        id: 202,
+        title: "Add account",
+        type: "button",
+        description: "Add a Google or other account"
+      },
+      {
+        id: 203,
+        title: "Auto sign-in",
+        type: "toggle",
+        value: true,
+        description: "Sign in automatically on system start"
+      }
+    ]
   },
   {
     id: 3,
     title: "Apps",
     icon: "apps",
+    path: "apps",
+    hasChevron: true,
+    subtitle: "8 apps installed",
+    subSettings: [
+      {
+        id: 301,
+        title: "Recently opened apps",
+        type: "select",
+        value: "View all",
+        description: "Manage recently used applications"
+      },
+      {
+        id: 302,
+        title: "See all apps",
+        type: "button",
+        description: "View and manage all installed applications"
+      },
+      {
+        id: 303,
+        title: "App permissions",
+        type: "button",
+        description: "Control which services apps can access"
+      },
+      {
+        id: 304,
+        title: "Special app access",
+        type: "button",
+        description: "Configure special access settings for apps"
+      }
+    ]
   },
   {
     id: 4,
     title: "Device Preferences",
     icon: "tv",
+    path: "device",
+    hasChevron: true,
+    subSettings: [
+      {
+        id: 401,
+        title: "About",
+        type: "button",
+        description: "Device information, legal and regulatory"
+      },
+      {
+        id: 402,
+        title: "Date & time",
+        type: "info",
+        value: "Automatic date & time",
+        description: "Set date, time, and time zone"
+      },
+      {
+        id: 403,
+        title: "Language",
+        type: "select",
+        value: "English (United States)",
+        options: ["English (United States)", "Spanish", "French"],
+        description: "System language settings"
+      },
+      {
+        id: 404,
+        title: "Keyboard",
+        type: "button",
+        description: "Configure on-screen keyboard settings"
+      },
+      {
+        id: 405,
+        title: "Storage",
+        type: "info",
+        value: "7.2 GB free of 16 GB",
+        description: "Manage internal storage"
+      },
+      {
+        id: 406,
+        title: "Developer options",
+        type: "toggle",
+        value: false,
+        description: "Advanced settings for development"
+      }
+    ]
   },
   {
     id: 5,
     title: "TV settings",
     icon: "settings",
+    path: "tv",
+    hasChevron: true,
+    subSettings: [
+      {
+        id: 501,
+        title: "Display & Sound",
+        type: "button",
+        description: "Configure resolution, HDR, and audio settings"
+      },
+      {
+        id: 502,
+        title: "HDMI-CEC",
+        type: "toggle",
+        value: true,
+        description: "Control connected devices with your remote"
+      },
+      {
+        id: 503,
+        title: "Power & energy",
+        type: "button",
+        description: "Sleep timer and energy saving settings"
+      },
+      {
+        id: 504,
+        title: "Channels & inputs",
+        type: "button",
+        description: "Manage TV channels and external inputs"
+      }
+    ]
   },
   {
     id: 6,
     title: "Remotes & accessories",
     icon: "remote",
+    path: "remotes",
+    hasChevron: true,
+    subtitle: "Optimum Remote connected",
+    subSettings: [
+      {
+        id: 601,
+        title: "Optimum Remote",
+        type: "info",
+        value: "Connected",
+        description: "Battery level: 78%",
+        icon: "remote"
+      },
+      {
+        id: 602,
+        title: "Add accessory",
+        type: "button",
+        description: "Pair a new Bluetooth remote or accessory"
+      },
+      {
+        id: 603,
+        title: "Remote button settings",
+        type: "button",
+        description: "Configure remote button actions"
+      },
+      {
+        id: 604,
+        title: "Voice Remote",
+        type: "toggle",
+        value: true,
+        description: "Enable voice commands on your remote"
+      }
+    ]
   },
+  {
+    id: 7,
+    title: "Privacy",
+    icon: "shield",
+    path: "privacy",
+    hasChevron: true,
+    subSettings: [
+      {
+        id: 701,
+        title: "Location",
+        type: "toggle",
+        value: false,
+        description: "Allow location access for relevant features"
+      },
+      {
+        id: 702,
+        title: "Usage & diagnostics",
+        type: "toggle",
+        value: true,
+        description: "Send diagnostic data to improve service"
+      },
+      {
+        id: 703,
+        title: "Advertising",
+        type: "button",
+        description: "Manage advertising preferences"
+      }
+    ]
+  },
+  {
+    id: 8,
+    title: "System",
+    icon: "system",
+    path: "system",
+    hasChevron: true,
+    subSettings: [
+      {
+        id: 801,
+        title: "Factory reset",
+        type: "button",
+        description: "Erase all data and reset device to factory settings"
+      },
+      {
+        id: 802,
+        title: "Restart",
+        type: "button",
+        description: "Restart your device"
+      },
+      {
+        id: 803,
+        title: "System update",
+        type: "info",
+        value: "Up to date",
+        description: "Android TV version 12"
+      },
+      {
+        id: 804,
+        title: "System sounds",
+        type: "toggle",
+        value: true,
+        description: "Play sounds for system events"
+      }
+    ]
+  }
 ];
 
 // Accessibility Settings
