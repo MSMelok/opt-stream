@@ -1,12 +1,21 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import SettingsItem from "@/components/settings/SettingsItem";
 import { settingsItems, generalSettingsItems, SettingItem } from "@/data/mockData";
 
 const Settings = () => {
+  const [, navigate] = useLocation();
   const [selectedSetting, setSelectedSetting] = useState<SettingItem>(settingsItems[0]);
 
   const handleSelectSetting = (setting: SettingItem) => {
     setSelectedSetting(setting);
+    
+    // Navigate to appropriate page based on selected setting
+    if (setting.title === "My Account") {
+      navigate("/account");
+    } else if (setting.title === "Accessibility") {
+      navigate("/accessibility");
+    }
   };
 
   return (

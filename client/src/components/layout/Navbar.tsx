@@ -27,19 +27,46 @@ const Navbar = () => {
             >
               Home
             </button>
-            <button className="text-white font-medium py-2 px-3 rounded-full hover:bg-white hover:bg-opacity-10 transition">
+            <button
+              onClick={() => navigate("/guide")}
+              className={`text-white font-medium py-2 px-3 rounded-full ${
+                isActive("/guide") || isActive("/guide-options") || location.startsWith("/channel/")
+                  ? "bg-white bg-opacity-10" 
+                  : "hover:bg-white hover:bg-opacity-10"
+              } transition`}
+            >
               Guide
             </button>
-            <button className="text-white font-medium py-2 px-3 rounded-full hover:bg-white hover:bg-opacity-10 transition">
+            <button
+              onClick={() => navigate("/on-demand")}
+              className={`text-white font-medium py-2 px-3 rounded-full ${
+                isActive("/on-demand") ? "bg-white bg-opacity-10" : "hover:bg-white hover:bg-opacity-10"
+              } transition`}
+            >
               On Demand
             </button>
-            <button className="text-white font-medium py-2 px-3 rounded-full hover:bg-white hover:bg-opacity-10 transition">
+            <button
+              onClick={() => navigate("/dvr")}
+              className={`text-white font-medium py-2 px-3 rounded-full ${
+                isActive("/dvr") ? "bg-white bg-opacity-10" : "hover:bg-white hover:bg-opacity-10"
+              } transition`}
+            >
               DVR
             </button>
-            <button className="text-white font-medium py-2 px-3 rounded-full hover:bg-white hover:bg-opacity-10 transition">
+            <button
+              onClick={() => navigate("/sports")}
+              className={`text-white font-medium py-2 px-3 rounded-full ${
+                isActive("/sports") ? "bg-white bg-opacity-10" : "hover:bg-white hover:bg-opacity-10"
+              } transition`}
+            >
               Sports
             </button>
-            <button className="text-white font-medium py-2 px-3 rounded-full hover:bg-white hover:bg-opacity-10 transition">
+            <button
+              onClick={() => navigate("/apps")}
+              className={`text-white font-medium py-2 px-3 rounded-full ${
+                isActive("/apps") ? "bg-white bg-opacity-10" : "hover:bg-white hover:bg-opacity-10"
+              } transition`}
+            >
               Apps
             </button>
             <button className="text-white p-2 rounded-full hover:bg-white hover:bg-opacity-10 transition">
@@ -50,7 +77,10 @@ const Navbar = () => {
             <button
               onClick={handleSettingsClick}
               className={`text-white p-2 rounded-full ${
-                isActive("/settings") || isActive("/device-settings") 
+                isActive("/settings") || 
+                isActive("/device-settings") || 
+                isActive("/accessibility") || 
+                isActive("/account") 
                   ? "bg-white bg-opacity-10" 
                   : "hover:bg-white hover:bg-opacity-10"
               } transition`}
