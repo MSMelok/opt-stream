@@ -23,7 +23,7 @@ const Navbar = () => {
   };
 
   const navigationLinks = [
-    { name: "Home", path: "/" },
+    { name: "Home", path: "https://msmelok.github.io/opt-stream" },
     { name: "Guide", path: "/guide" },
     { name: "On Demand", path: "/on-demand" },
     { name: "Sports", path: "/sports" },
