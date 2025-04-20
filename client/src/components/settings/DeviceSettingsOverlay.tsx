@@ -1,6 +1,15 @@
 import { useState, useRef, useEffect } from "react";
-import { X, ChevronRight, Wifi, User, Grid, 
-  Monitor, Settings, Gamepad, ArrowLeft } from "lucide-react";
+import { 
+  X, ChevronRight, Wifi, User, Grid, Monitor, 
+  Settings, Gamepad, ArrowLeft, Info, HelpCircle,
+  AlertCircle, Command, Shield
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface DeviceSettingsOverlayProps {
   isOpen: boolean;
@@ -12,6 +21,7 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
   const [showAppDetails, setShowAppDetails] = useState(false);
   const [showSystemApps, setShowSystemApps] = useState(false);
   const [selectedApp, setSelectedApp] = useState<string | null>(null);
+  const [showHelpInfo, setShowHelpInfo] = useState<{ show: boolean, message: string }>({ show: false, message: "" });
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,6 +47,7 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
       setShowAppDetails(false);
       setShowSystemApps(false);
       setSelectedApp(null);
+      setShowHelpInfo({ show: false, message: "" });
     }
   }, [isOpen]);
 
@@ -46,10 +57,12 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
     setSelectedSetting(setting);
     setShowAppDetails(false);
     setSelectedApp(null);
+    setShowHelpInfo({ show: false, message: "" });
   };
 
   const handleAppClick = (app: string) => {
     setSelectedApp(app);
+    setShowHelpInfo({ show: false, message: "" });
   };
 
   const handleBackClick = () => {
@@ -60,10 +73,56 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
     } else {
       setSelectedSetting(null);
     }
+    setShowHelpInfo({ show: false, message: "" });
+  };
+
+  const showHelp = (message: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setShowHelpInfo({ show: true, message });
+  };
+
+  const hideHelp = () => {
+    setShowHelpInfo({ show: false, message: "" });
+  };
+
+  // Show complex setting help tip for specific settings
+  const getHelpForSetting = (setting: string): string => {
+    switch (setting) {
+      case "Network & Internet":
+        return "Configure your device's internet connection. You can connect via Wi-Fi or Ethernet for streaming content.";
+      case "Accounts & sign-in":
+        return "Manage your Optimum account and other linked accounts. Sign in to access your personalized content.";
+      case "Apps":
+        return "Manage your installed apps, permissions, and special features. View system apps to see all software on your device.";
+      case "Device Preferences":
+        return "Configure device-specific settings including language, date & time, and storage management.";
+      case "TV settings":
+        return "Adjust display resolution, sound output, HDMI-CEC controls and other TV-related settings.";
+      case "Remotes & accessories":
+        return "Pair and manage remote controls and accessories connected to your device.";
+      default:
+        return "Configure your device settings to personalize your experience.";
+    }
+  };
+
+  // Help for app-specific functions
+  const getHelpForAppAction = (action: string): string => {
+    switch (action) {
+      case "Force stop":
+        return "Immediately stops all processes related to this app. Use when the app is unresponsive or causing problems.";
+      case "Clear data":
+        return "Removes all user data associated with this app including logins, settings, and cached content. This resets the app to its initial state.";
+      case "Clear cache":
+        return "Removes temporary files stored by the app without affecting your personal data or settings. This can help fix minor performance issues.";
+      case "Uninstall updates":
+        return "Reverts the app to the factory version by removing updates. Use this if a recent update is causing problems.";
+      default:
+        return "Manage application settings and data.";
+    }
   };
 
   const renderContent = () => {
-    // App details view - shows specific app options
+    // App details view - shows specific app options with tooltips
     if (selectedApp) {
       return (
         <div>
@@ -75,6 +134,18 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-medium">{selectedApp}</h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="ml-2 text-blue-400 hover:text-blue-300">
+                    <HelpCircle className="w-4 h-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-800 text-white border-gray-700 max-w-xs">
+                  <p className="text-sm">Manage this app's settings, data, and permissions.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
 
           <div className="p-4">
@@ -89,21 +160,24 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
             </div>
             
             <div className="mt-6 space-y-3">
-              <button className="w-full py-3 px-4 bg-gray-800 rounded-md text-left hover:bg-gray-700 transition">
-                Force stop
-              </button>
-              
-              <button className="w-full py-3 px-4 bg-gray-800 rounded-md text-left hover:bg-gray-700 transition">
-                Clear data
-              </button>
-              
-              <button className="w-full py-3 px-4 bg-gray-800 rounded-md text-left hover:bg-gray-700 transition">
-                Clear cache
-              </button>
-              
-              <button className="w-full py-3 px-4 bg-gray-800 rounded-md text-left hover:bg-gray-700 transition">
-                Uninstall updates
-              </button>
+              {/* App action buttons with tooltips */}
+              {["Force stop", "Clear data", "Clear cache", "Uninstall updates"].map((action) => (
+                <div key={action} className="relative group">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button className="w-full py-3 px-4 bg-gray-800 rounded-md text-left hover:bg-gray-700 transition flex justify-between items-center">
+                          <span>{action}</span>
+                          <Info className="w-4 h-4 text-gray-400 opacity-70 group-hover:opacity-100" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700 max-w-xs">
+                        <p className="text-sm">{getHelpForAppAction(action)}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -122,6 +196,18 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-medium">See all apps</h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="ml-2 text-blue-400 hover:text-blue-300">
+                    <HelpCircle className="w-4 h-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-800 text-white border-gray-700 max-w-xs">
+                  <p className="text-sm">View and manage all installed applications. Toggle 'Show system apps' to see pre-installed system components.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
 
           <div className="p-4">
@@ -245,18 +331,62 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
               <ArrowLeft className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-medium">{selectedSetting}</h3>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="ml-2 text-blue-400 hover:text-blue-300">
+                    <HelpCircle className="w-4 h-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="bg-gray-800 text-white border-gray-700 max-w-xs">
+                  <p className="text-sm">{getHelpForSetting(selectedSetting)}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
 
           {selectedSetting === "Network & Internet" && (
             <div className="divide-y divide-gray-800">
-              <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
-                <span className="font-medium">Wi-Fi</span>
-                <span className="text-sm text-gray-400">Off</span>
-              </button>
-              <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
-                <span className="font-medium">Ethernet</span>
-                <span className="text-sm text-green-500">Connected</span>
-              </button>
+              <div className="relative group">
+                <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
+                  <span className="font-medium">Wi-Fi</span>
+                  <span className="text-sm text-gray-400">Off</span>
+                </button>
+                <div className="absolute inset-y-0 right-12 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="p-1">
+                          <Info className="w-4 h-4 text-blue-400" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                        <p className="text-sm">Connect to wireless networks to stream content</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              </div>
+              <div className="relative group">
+                <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
+                  <span className="font-medium">Ethernet</span>
+                  <span className="text-sm text-green-500">Connected</span>
+                </button>
+                <div className="absolute inset-y-0 right-12 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="p-1">
+                          <Info className="w-4 h-4 text-blue-400" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                        <p className="text-sm">Wired connection providing the most stable streaming experience</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              </div>
             </div>
           )}
 
@@ -271,32 +401,83 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
                   </div>
                 </div>
               </div>
-              <button className="w-full py-2 px-3 bg-gray-800 rounded-md text-center hover:bg-gray-700 transition">
-                Add another account
-              </button>
+              <div className="relative group">
+                <button className="w-full py-2 px-3 bg-gray-800 rounded-md text-center hover:bg-gray-700 transition">
+                  Add another account
+                </button>
+                <div className="absolute -top-1 right-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="p-1">
+                          <Info className="w-4 h-4 text-blue-400" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-gray-800 text-white border-gray-700">
+                        <p className="text-sm">Add additional accounts for different family members</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              </div>
             </div>
           )}
 
           {selectedSetting === "Apps" && (
             <div className="divide-y divide-gray-800">
-              <button 
-                className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-                onClick={() => setShowAppDetails(true)}
-              >
-                <span className="font-medium">See all apps</span>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
-              </button>
-              <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
-                <span className="font-medium">App permissions</span>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
-              </button>
-              <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
-                <span className="font-medium">Special app access</span>
-                <ChevronRight className="w-5 h-5 text-gray-400" />
-              </button>
+              <div className="relative group">
+                <button 
+                  className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
+                  onClick={() => setShowAppDetails(true)}
+                >
+                  <span className="font-medium">See all apps</span>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+              <div className="relative group">
+                <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
+                  <span className="font-medium">App permissions</span>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </button>
+                <div className="absolute inset-y-0 right-12 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="p-1">
+                          <Info className="w-4 h-4 text-blue-400" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                        <p className="text-sm">Control which services apps can access (camera, microphone, etc.)</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              </div>
+              <div className="relative group">
+                <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
+                  <span className="font-medium">Special app access</span>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </button>
+                <div className="absolute inset-y-0 right-12 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="p-1">
+                          <AlertCircle className="w-4 h-4 text-amber-400" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700">
+                        <p className="text-sm">Advanced permissions that can affect device functionality. Change with caution.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              </div>
             </div>
           )}
 
+          {/* Other settings sections are similar - left unchanged for brevity */}
           {selectedSetting === "Device Preferences" && (
             <div className="divide-y divide-gray-800">
               <button className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors">
@@ -356,7 +537,7 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
       );
     }
     
-    // Main settings menu
+    // Main settings menu with tooltips
     return (
       <div>
         <div className="px-4 py-2">
@@ -364,96 +545,53 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
         </div>
         
         <div className="divide-y divide-gray-800">
-          <button
-            className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-            onClick={() => handleSettingClick("Network & Internet")}
-          >
-            <div className="flex items-center">
-              <div className="mr-3 text-white">
-                <Wifi className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-white text-left">Network & Internet</p>
-                <p className="text-xs text-gray-400 text-left">Ethernet connected</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-
-          <button
-            className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-            onClick={() => handleSettingClick("Accounts & sign-in")}
-          >
-            <div className="flex items-center">
-              <div className="mr-3 text-white">
-                <User className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-white text-left">Accounts & sign-in</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-
-          <button
-            className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-            onClick={() => handleSettingClick("Apps")}
-          >
-            <div className="flex items-center">
-              <div className="mr-3 text-white">
-                <Grid className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-white text-left">Apps</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-
-          <button
-            className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-            onClick={() => handleSettingClick("Device Preferences")}
-          >
-            <div className="flex items-center">
-              <div className="mr-3 text-white">
-                <Monitor className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-white text-left">Device Preferences</p>
+          {/* Main menu options with tooltips */}
+          {[
+            { title: "Network & Internet", subtitle: "Ethernet connected", icon: <Wifi className="w-5 h-5" /> },
+            { title: "Accounts & sign-in", icon: <User className="w-5 h-5" /> },
+            { title: "Apps", icon: <Grid className="w-5 h-5" /> },
+            { title: "Device Preferences", icon: <Monitor className="w-5 h-5" /> },
+            { title: "TV settings", icon: <Settings className="w-5 h-5" /> },
+            { title: "Remotes & accessories", icon: <Gamepad className="w-5 h-5" /> },
+            { title: "Privacy", icon: <Shield className="w-5 h-5" /> },
+            { title: "System", icon: <Command className="w-5 h-5" /> }
+          ].map((setting) => (
+            <div key={setting.title} className="relative group">
+              <button
+                className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
+                onClick={() => handleSettingClick(setting.title)}
+              >
+                <div className="flex items-center">
+                  <div className="mr-3 text-white">
+                    {setting.icon}
+                  </div>
+                  <div>
+                    <p className="font-medium text-white text-left">{setting.title}</p>
+                    {setting.subtitle && (
+                      <p className="text-xs text-gray-400 text-left">{setting.subtitle}</p>
+                    )}
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400" />
+              </button>
+              
+              {/* Tooltip for each setting */}
+              <div className="absolute inset-y-0 right-12 opacity-0 group-hover:opacity-100 transition-opacity flex items-center">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="p-1">
+                        <Info className="w-4 h-4 text-blue-400" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="left" className="bg-gray-800 text-white border-gray-700 max-w-xs">
+                      <p className="text-sm">{getHelpForSetting(setting.title)}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
             </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-
-          <button
-            className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-            onClick={() => handleSettingClick("TV settings")}
-          >
-            <div className="flex items-center">
-              <div className="mr-3 text-white">
-                <Settings className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-white text-left">TV settings</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
-
-          <button
-            className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-800 transition-colors"
-            onClick={() => handleSettingClick("Remotes & accessories")}
-          >
-            <div className="flex items-center">
-              <div className="mr-3 text-white">
-                <Gamepad className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-medium text-white text-left">Remotes & accessories</p>
-              </div>
-            </div>
-            <ChevronRight className="w-5 h-5 text-gray-400" />
-          </button>
+          ))}
         </div>
       </div>
     );
@@ -478,6 +616,12 @@ const DeviceSettingsOverlay = ({ isOpen, onClose }: DeviceSettingsOverlayProps) 
         )}
         
         {renderContent()}
+        
+        {/* Help hint that appears at the bottom of the panel */}
+        <div className="fixed bottom-0 right-0 max-w-sm w-full bg-gray-800 p-2 border-t border-gray-700 flex items-center justify-between">
+          <span className="text-xs text-gray-400">Hover over options for help</span>
+          <HelpCircle className="w-4 h-4 text-blue-400" />
+        </div>
       </div>
     </div>
   );
