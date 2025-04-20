@@ -1,0 +1,96 @@
+
+Create a responsive React project that mimics the Optimum Stream TV interface. Use React with Tailwind CSS for styling. The UI should be clean, modern, and consistent with a dark blue theme as optimum theme.
+
+The interface includes the following three main screens:
+
+📺 1. Home Page
+Header Navigation at the top:
+
+Items: Home, Guide, On Demand, DVR, Sports, Apps, Search, Settings Icon, and Bell Notification
+
+Top-right: Display optimum.tv and current time (e.g., "10:41")
+
+Main Content:
+
+Current Channel Info Card: “News 12 Long Island” with program time & action buttons (Watch Now / More Info)
+
+Recent Channels Row: Horizontally scrollable thumbnails for channels (e.g., HGTV, HLN, Food Network, etc.)
+
+Favorite Apps Section: Netflix, Prime Video, Disney+, YouTube, Hulu, etc.
+
+Play Next Section: Shows in-progress content
+
+Trending (TV & On Demand) sections
+
+Live & Upcoming Sports cards
+
+Quick Tips section: Features cards like “Pairing you remote”, “Guide”, etc.
+
+⚙️ 2. Settings Page
+Title: Settings > Optimum TV
+
+Left Panel: List of options:
+
+Favorite Channels
+
+DVR Preferences
+
+SAP (Secondary Audio Program) toggle
+
+Parental Controls (ON/OFF)
+
+Purchase PIN (ON/OFF)
+
+Default Channel (Dropdown or Last Channel)
+
+My Account
+
+General Section:
+
+Accessibility
+
+Device & Remote Settings
+
+Help
+
+Right Panel: Show contextual help text depending on selection (e.g., “You can set your favorite channels…”)
+
+🛠️ 3. Device & Remote Settings Page
+Title: Settings > Device & Remote Settings
+
+UI mimics Android TV-like settings panel on the right side.
+
+Items:
+
+Network & Internet (Show connected status)
+
+Accounts & Sign-In
+
+Apps
+
+Device Preferences
+
+TV Settings
+
+Remotes & Accessories
+
+🧩 Design Notes:
+Use Tailwind CSS for modern styling (e.g., bg-blue-900, text-white, rounded-2xl, shadow-lg)
+
+Use CSS Grid or Flexbox for layout
+
+Add hover/focus effects for accessibility
+
+Create each section as a separate React component
+
+Ensure components are reusable and responsive
+
+📁 Directory suggestion:
+
+/components: UI components (Navbar, ChannelCard, AppTile, SettingsMenu, etc.)
+
+/pages: Home.jsx, Settings.jsx, DeviceSettings.jsx
+
+/assets: For mock images/icons if needed
+
+Optionally use mock JSON data to populate sections like channels, apps, or settings toggles.
